@@ -1,102 +1,92 @@
-### Stack for undo/redo
-Stack for undo/redo actions of borrowing/returning item
+# 📚 Library System (Data Structures Practice in Python)
+
+This project is a **practice-based library management system** built in Python, focused on implementing and applying **core data structures** such as **stacks**, **queues**, **sets**, and **dictionaries**.
+
+The purpose of this repo is **not** to build a full-fledged library system, but to explore how different data structures can be used to manage and organize real-world logic in a clean and efficient way.
+
+---
+
+## 🚀 Features
+
+- **Member Borrow/Return Logic** using `set`, `dict`, and `custom classes`
+- **Undo / Redo functionality** per member using a custom `Stack` implementation
+- **Waitlisting** system for unavailable books using a `Queue`
+- **Action tracking** using dictionaries to encapsulate actions like `borrow`, `return`, `request`, and `cancel_request`
+- Proper validation and error handling for user actions
+- Clean OOP structure with extensible classes like `Library`, `Member`, `LibraryItem`, etc.
+
+---
+
+## 🧠 Data Structures Practiced
+
+| Feature | Data Structure |
+|--------|----------------|
+| Tracking borrowed items | `set()` |
+| Undo/Redo actions       | Custom `Stack` |
+| Waitlist queue per item | Custom `Queue` |
+| Action history/log      | `list`, `dict` |
+| Members, Items lookup   | `dict` |
+
+---
+
+## 🔧 Technologies
+
+- Python 3.10+
+- Custom class-based data structure implementations (no external libraries)
+- PyCharm IDE (for development)
+
+---
+
+## 📂 Project Structure (WIP)
+
+library-system/ <br />
+├── library.py <br />
+├── member.py <br />
+├── library_item.py <br />
+├── stack.py <br />
+├── queue.py <br />
+├── borrow_record.py <br />
+├── constants.py <br />
+├── init.py <br />
+└── …
+
+---
+
+## 📝 How to Run
+
+1. Clone the repo:
+
+```bash
+git clone git@github.com:manerao-pritam/library-system-python.git
+cd library-system
+```
+
+2.	Run from PyCharm or your preferred Python environment.
+3.	This is not a packaged app — it’s meant for exploring logic and learning.
 
 ⸻
 
-🔄 Basic idea
-
-You can think of undo/redo as two stacks:
-	•	Undo stack: stores actions that have been done and can be undone.
-	•	Redo stack: stores actions that have been undone and can be redone.
-
-⸻
-
-	•	undo_stacks: Dict[MemberID, Stack[Action]]
-	•	redo_stacks: Dict[MemberID, Stack[Action]]
+🎯 Future Ideas (Stretch Goals)
+	•	Storing Borrowing History records as linked list  
+	•	Some simple front-end
+	•	Integrate persistent storage (SQLite or PostgreSQL)
 
 ⸻
 
-📚 For your library system:
+🙌 Why This Project?
 
-Let’s say you’re tracking actions like:
-	•	Member borrows a book
-	•	Member returns a book
-
-Every time a member performs an action, you push a record of that action onto the undo stack. If the user then hits Undo, you:
-	1.	Pop from the undo stack
-	2.	Reverse the action (e.g., if they borrowed a book, you “return” it)
-	3.	Push that reversed action onto the redo stack
-
-Similarly, if the user hits Redo:
-	1.	Pop from the redo stack
-	2.	Re-apply the action
-	3.	Push it back onto the undo stack
+This repo started as a small practice project and evolved into a great hands-on way to learn and apply data structures in Python with real-world context. If you’re learning Python and want to go beyond LeetCode, this is a great way to see how DS concepts power real logic.
 
 ⸻
 
-🧠 What goes in the stack?
+📬 Feedback / Suggestions?
 
-Each stack element could be a small object or tuple that describes:
-	•	The type of action: borrow or return
-	•	The member ID
-	•	The book ID
-	•	Maybe a timestamp, if needed
-
-This way, you know what happened and how to reverse it.
+Feel free to open issues or PRs if you have suggestions, improvements, or want to build on top of this!
 
 ⸻
 
-🔄 Resetting Redo Stack
+📄 License
 
-Important detail: anytime the user performs a new action (not a redo), you should clear the redo stack—because the future changed.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-⸻
-
-✅ Benefits of using stacks:
-	•	Easy LIFO (last-in, first-out) behavior for undo/redo.
-	•	You can limit the size of stacks if you want to cap history.
-	•	Very intuitive, matches user mental model.
-
-⸻
-
-### Queue to maintaining borrow requests for unavailable items
-
-⸻
-
-📕 Scenario:
-
-Let’s say a book or magazine is currently checked out. Other members still want it, so you want to let them “wait in line”—classic queue behavior.
-
-⸻
-
-🧾 Why a queue?
-	•	First-come, first-served: whoever requested the book first should get it first.
-	•	A queue gives you that perfect FIFO (first-in, first-out) behavior.
-
-⸻
-
-🧠 How it works:
-	1.	Book is checked out → not available.
-	2.	Member requests it → you add their member ID to the wait queue for that book.
-	3.	When the book is returned:
-	•	You check if the wait queue for that book is non-empty.
-	•	If it is, you dequeue the next member and notify them (or auto-assign depending on your flow).
-
-⸻
-
-📚 Data structure-wise:
-
-You can have a waitlist map:
-
-book_id → queue of member_ids
-
-Each unavailable book has its own queue of members waiting for it.
-
-⸻
-
-Bonus thoughts:
-	•	You could even add timestamps to each entry if you need more detailed logs or for debugging fairness.
-	•	Want to let someone give up their spot? Just remove them from the queue.
-	•	If you allow holds to expire, you could combine a queue with a timer or scheduling system.
-
-⸻
+---
